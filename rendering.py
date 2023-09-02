@@ -1,15 +1,8 @@
 
 import pygame
 
+from constants import *
 import levels
-
-
-WIDTH = 1620
-HEIGHT = 900
-BLOCK_SIZE = 60
-
-BACKGROUND_COLOR = (200, 255, 200)
-WALL_COLOR = (49, 66, 66)
 
 
 class Renderer:

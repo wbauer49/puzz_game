@@ -2,6 +2,7 @@
 import pygame
 import time
 
+import controls
 import rendering
 
 
@@ -17,6 +18,8 @@ try:
             if event.type == pygame.QUIT:
                 running = False
                 continue
+
+            controls.check_event(event)
 
         renderer.render()
 
