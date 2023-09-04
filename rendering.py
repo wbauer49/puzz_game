@@ -1,8 +1,11 @@
 
 import pygame
 
+import blocks
 from constants import *
 import levels
+import map_grid
+import controls
 
 
 class Renderer:
@@ -18,8 +21,16 @@ class Renderer:
 
     def render(self):
         self.screen.blit(self.layout_render, (0, 0))
-        for obj in self.curr_level.objects:
-            self.render_object(obj)
+
+        for row, row_list in enumerate(map_grid.GRID):
+            for col, block in enumerate(row_list):
+                if block is None or type(block) is blocks.Wall:
+                    continue
+                self.screen.blit(block.sprite, (col * BLOCK_SIZE, row * BLOCK_SIZE))
+
+        if controls.drag_obj is not None:
+            self.screen.blit(controls.drag_obj.sprite, (controls.drag_pos[0], controls.drag_pos[1]))
+
         pygame.display.flip()
 
     def render_layout(self, layout):
@@ -34,9 +45,8 @@ class Renderer:
                     y = row * BLOCK_SIZE
                     self.layout_render.blit(wall_surface, (x, y))
 
-    def render_object(self, object):
-        pass
-
     def go_to_level(self, level_num):
         self.curr_level = levels.get_level(level_num)
         self.render_layout(self.curr_level.layout)
+
+        map_grid.init_grid(self.curr_level)
