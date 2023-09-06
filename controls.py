@@ -20,19 +20,19 @@ def check_event(event):
     if event.type == pygame.MOUSEBUTTONDOWN:
         if event.button == 1:  # left click
             start_coords = (event.pos[0] // BLOCK_SIZE, event.pos[1] // BLOCK_SIZE)
-            drag_obj = map_grid.get_grid_block(start_coords)
-            drag_pos = (event.pos[0] - BLOCK_SIZE // 2, event.pos[1] - BLOCK_SIZE // 2)
+            if map_grid.coords_in_range(start_coords):
+                drag_obj = map_grid.get_grid_block(start_coords)
+                drag_pos = (event.pos[0] - BLOCK_SIZE // 2, event.pos[1] - BLOCK_SIZE // 2)
 
         else:  # right click
-            print("loool")
             if drag_obj is not None:
                 drag_obj.rotate()
-
             else:
                 coords = (event.pos[0] // BLOCK_SIZE, event.pos[1] // BLOCK_SIZE)
-                block = map_grid.get_grid_block(coords)
-                if isinstance(block, blocks.Item):
-                    block.rotate()
+                if map_grid.coords_in_range(coords):
+                    block = map_grid.get_grid_block(coords)
+                    if isinstance(block, blocks.Item):
+                        block.rotate()
 
     elif event.type == pygame.MOUSEMOTION:
         if drag_obj is not None:
@@ -42,9 +42,14 @@ def check_event(event):
         if drag_obj is not None:
             if event.button == 1:
                 end_coords = (event.pos[0] // BLOCK_SIZE, event.pos[1] // BLOCK_SIZE)
-                end_block = map_grid.get_grid_block(end_coords)
-                if end_block is None:  # if empty, drop the block here
-                    map_grid.set_grid_block(end_coords, drag_obj)
-                    map_grid.set_grid_block(start_coords, None)
+                if map_grid.coords_in_range(end_coords):
+                    end_block = map_grid.get_grid_block(end_coords)
+                    if end_block is None:  # if empty, drop the block here
+                        map_grid.set_grid_block(end_coords, drag_obj)
+                        map_grid.set_grid_block(start_coords, None)
 
                 drag_obj = None
+
+    elif event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_SPACE:
+            map_grid.step_forward()
