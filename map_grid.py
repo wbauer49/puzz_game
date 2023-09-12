@@ -5,13 +5,16 @@ import blocks
 GRID = [[]]
 ITEM_ORDER = []
 CURRENT_STEP = 0
+WORK_RECT = (0, 0, 0, 0)
 
 
 def init_grid(level):
     global GRID
     global ITEM_ORDER
+    global WORK_RECT
 
     ITEM_ORDER = level.item_order
+    WORK_RECT = level.work_rect
 
     GRID = []
     for row, row_list in enumerate(level.layout):
@@ -20,13 +23,17 @@ def init_grid(level):
             GRID[row].append(None)
             if block_type == 1:
                 GRID[row][col] = blocks.Wall()
-            else:
-                if level.items:
-                    GRID[row][col] = (level.items.pop())()  # level.items is a list of types
+            elif coords_in_workspace((col, row)) and level.items:
+                GRID[row][col] = (level.items.pop())()  # level.items is a list of types
 
 
 def coords_in_range(coords):
     return 0 <= coords[0] < len(GRID[0]) and 0 <= coords[1] < len(GRID)
+
+
+def coords_in_workspace(coords):
+    return WORK_RECT[0] <= coords[0] < WORK_RECT[0] + WORK_RECT[2] and \
+        WORK_RECT[1] <= coords[1] < WORK_RECT[1] + WORK_RECT[3]
 
 
 def get_grid_block(coords):

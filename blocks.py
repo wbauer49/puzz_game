@@ -91,6 +91,7 @@ class Mover(Piston):
 class Turner(Item):
     sprite_name = "turner"
     clockwise = True
+    rotate_others = False
 
     def perform_action(self, self_coords):
         x, y = self_coords
@@ -100,10 +101,23 @@ class Turner(Item):
         else:
             coords_list = [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
 
+        for coords in coords_list:
+            if map_grid.get_grid_block(coords).is_wall:
+                return
+
         temp_block = map_grid.get_grid_block(coords_list[3])
         for i in range(2, -1, -1):
             move_block = map_grid.get_grid_block(coords_list[i])
             map_grid.set_grid_block(coords_list[i + 1], move_block)
+            if self.rotate_others:
+                move_block.rotate()
         map_grid.set_grid_block(coords_list[0], temp_block)
+        if self.rotate_others:
+            temp_block.rotate()
 
         self.rotate()
+
+
+class HardTurner(Turner):
+    sprite_name = "hard_turner"
+    rotate_others = True

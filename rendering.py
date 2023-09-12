@@ -40,24 +40,30 @@ class Renderer:
 
         pygame.display.flip()
 
-    def render_layout(self, layout, item_order):
+    def render_layout(self, level):
         self.layout_render = pygame.Surface((WIDTH, HEIGHT))
         self.layout_render.fill(BACKGROUND_COLOR)
-        for row, row_list in enumerate(layout):
+        for row, row_list in enumerate(level.layout):
             for col, block_type in enumerate(row_list):
                 if block_type == 1:
                     wall_surface = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
                     wall_surface.fill(WALL_COLOR)
-                    x = col * BLOCK_SIZE
-                    y = row * BLOCK_SIZE
-                    self.layout_render.blit(wall_surface, (x, y))
+                    self.layout_render.blit(wall_surface, (col * BLOCK_SIZE, row * BLOCK_SIZE))
+                elif (col, row) == level.end_coords:
+                    goal_surface = pygame.Surface((BLOCK_SIZE, BLOCK_SIZE))
+                    goal_surface.fill((225, 255, 127))
+                    self.layout_render.blit(goal_surface, (col * BLOCK_SIZE, row * BLOCK_SIZE))
 
-        for i, item_type in enumerate(item_order):
+        work_surface = pygame.Surface((BLOCK_SIZE * level.work_rect[2], BLOCK_SIZE * level.work_rect[3]))
+        work_surface.fill((200, 156, 255))
+        self.layout_render.blit(work_surface, (level.work_rect[0] * BLOCK_SIZE, level.work_rect[1] * BLOCK_SIZE))
+
+        for i, item_type in enumerate(level.item_order):
             sprite = pygame.transform.scale2x(item_type().sprite)
 
             self.layout_render.blit(sprite, (i * BLOCK_SIZE * 2, HEIGHT - BLOCK_SIZE * 2))
 
     def go_to_level(self, level_num):
         level = levels.get_level(level_num)
-        self.render_layout(level.layout, level.item_order)
+        self.render_layout(level)
         map_grid.init_grid(level)

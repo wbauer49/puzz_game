@@ -42,7 +42,7 @@ def check_event(event):
         if drag_obj is not None:
             if event.button == 1:
                 end_coords = (event.pos[0] // BLOCK_SIZE, event.pos[1] // BLOCK_SIZE)
-                if map_grid.coords_in_range(end_coords):
+                if map_grid.coords_in_workspace(end_coords):
                     end_block = map_grid.get_grid_block(end_coords)
                     if end_block is None:  # if empty, drop the block here
                         map_grid.set_grid_block(end_coords, drag_obj)
