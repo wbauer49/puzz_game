@@ -4,9 +4,7 @@ import pygame
 
 import blocks
 from constants import *
-import levels
-import map_grid
-import controls
+import env
 
 
 class Renderer:
@@ -26,16 +24,16 @@ class Renderer:
     def render(self):
         self.screen.blit(self.layout_render, (0, 0))
 
-        for row, row_list in enumerate(map_grid.GRID):
+        for row, row_list in enumerate(env.grid.grid):
             for col, block in enumerate(row_list):
                 if block is None or type(block) is blocks.Wall:
                     continue
                 self.screen.blit(block.sprite, (col * BLOCK_SIZE, row * BLOCK_SIZE))
 
-        if controls.drag_obj is not None:
-            self.screen.blit(controls.drag_obj.sprite, (controls.drag_pos[0], controls.drag_pos[1]))
+        if env.controller.drag_obj is not None:
+            self.screen.blit(env.controller.drag_obj.sprite, (env.controller.drag_pos[0], env.controller.drag_pos[1]))
 
-        i = map_grid.CURRENT_STEP % len(map_grid.ITEM_ORDER)
+        i = env.grid.current_step % len(env.grid.item_order)
         self.screen.blit(self.step_sprite, (i * BLOCK_SIZE * 2, HEIGHT - BLOCK_SIZE * 2))
 
         pygame.display.flip()
@@ -54,16 +52,11 @@ class Renderer:
                     goal_surface.fill((225, 255, 127))
                     self.layout_render.blit(goal_surface, (col * BLOCK_SIZE, row * BLOCK_SIZE))
 
-        work_surface = pygame.Surface((BLOCK_SIZE * level.work_rect[2], BLOCK_SIZE * level.work_rect[3]))
+        work_surface = pygame.Surface((BLOCK_SIZE * level.workspace_rect[2], BLOCK_SIZE * level.workspace_rect[3]))
         work_surface.fill((200, 156, 255))
-        self.layout_render.blit(work_surface, (level.work_rect[0] * BLOCK_SIZE, level.work_rect[1] * BLOCK_SIZE))
+        self.layout_render.blit(work_surface, (level.workspace_rect[0] * BLOCK_SIZE, level.workspace_rect[1] * BLOCK_SIZE))
 
         for i, item_type in enumerate(level.item_order):
             sprite = pygame.transform.scale2x(item_type().sprite)
 
             self.layout_render.blit(sprite, (i * BLOCK_SIZE * 2, HEIGHT - BLOCK_SIZE * 2))
-
-    def go_to_level(self, level_num):
-        level = levels.get_level(level_num)
-        self.render_layout(level)
-        map_grid.init_grid(level)

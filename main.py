@@ -2,13 +2,17 @@
 import pygame
 import time
 
-import controls
+import controller
+import levels
 import rendering
+import env
 
 
 try:
-    renderer = rendering.Renderer()
-    renderer.go_to_level(1)
+    env.controller = controller.Controller()
+    env.renderer = rendering.Renderer()
+
+    levels.go_to_level(1)
 
     running = True
     while running:
@@ -19,15 +23,16 @@ try:
                 running = False
                 continue
 
-            controls.check_event(event)
+            env.controller.check_event(event)
 
-        renderer.render()
+        env.renderer.render()
 
         sleep_time = (1 / 60) - (time.time() - start_time)
         if sleep_time > 0:
             time.sleep(sleep_time)
         else:
             print("frame lag")
+
 
 except KeyboardInterrupt:
     print("exited")

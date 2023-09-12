@@ -1,8 +1,9 @@
-import map_grid
 from constants import BLOCK_SIZE
 
 import os.path
 import pygame
+
+import env
 
 
 class Block(pygame.sprite.Sprite):
@@ -47,9 +48,9 @@ def get_all_coords_in_direction(start_coords, direction):
     if direction == 0:
         ret_coords = [(x, i) for i in range(y - 1, -1, -1)]
     elif direction == 1:
-        ret_coords = [(i, y) for i in range(x + 1, map_grid.get_width())]
+        ret_coords = [(i, y) for i in range(x + 1, env.grid.get_width())]
     elif direction == 2:
-        ret_coords = [(x, i) for i in range(y + 1, map_grid.get_height())]
+        ret_coords = [(x, i) for i in range(y + 1, env.grid.get_height())]
     elif direction == 3:
         ret_coords = [(i, y) for i in range(x - 1, -1, -1)]
     else:
@@ -65,17 +66,17 @@ class Piston(Item):
     def perform_action(self, self_coords):
         coords_list = get_all_coords_in_direction(self_coords, self.direction)
         for i, coords in enumerate(coords_list):
-            block = map_grid.get_grid_block(coords)
+            block = env.grid.get_grid_block(coords)
             if block is None:
                 for j in range(i - 1, -1, -1):
-                    move_block = map_grid.get_grid_block(coords_list[j])
-                    map_grid.set_grid_block(coords_list[j + 1], move_block)
+                    move_block = env.grid.get_grid_block(coords_list[j])
+                    env.grid.set_grid_block(coords_list[j + 1], move_block)
 
                 if self.move_self:
-                    map_grid.set_grid_block(coords_list[0], self)
-                    map_grid.set_grid_block(self_coords, None)
+                    env.grid.set_grid_block(coords_list[0], self)
+                    env.grid.set_grid_block(self_coords, None)
                 else:
-                    map_grid.set_grid_block(coords_list[0], None)
+                    env.grid.set_grid_block(coords_list[0], None)
 
                 return
 
@@ -102,16 +103,17 @@ class Turner(Item):
             coords_list = [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
 
         for coords in coords_list:
-            if map_grid.get_grid_block(coords).is_wall:
+            block = env.grid.get_grid_block(coords)
+            if block is not None and block.is_wall:
                 return
 
-        temp_block = map_grid.get_grid_block(coords_list[3])
+        temp_block = env.grid.get_grid_block(coords_list[3])
         for i in range(2, -1, -1):
-            move_block = map_grid.get_grid_block(coords_list[i])
-            map_grid.set_grid_block(coords_list[i + 1], move_block)
+            move_block = env.grid.get_grid_block(coords_list[i])
+            env.grid.set_grid_block(coords_list[i + 1], move_block)
             if self.rotate_others:
                 move_block.rotate()
-        map_grid.set_grid_block(coords_list[0], temp_block)
+        env.grid.set_grid_block(coords_list[0], temp_block)
         if self.rotate_others:
             temp_block.rotate()
 
