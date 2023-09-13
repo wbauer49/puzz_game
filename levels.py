@@ -17,19 +17,17 @@ class Level1:
         "00000000000000100000",
         "00000000000000100000",
     ]
-    workspace_rect = (1, 1, 5, 5)
-    end_coords = (16, 8)
+    workspace_rect = (1, 1, 7, 3)
+    end_coords = (17, 8)
     items = [
         blocks.Mover,
         blocks.Turner,
-        blocks.Piston,
         blocks.HardTurner,
     ]
     item_order = [
-        blocks.Mover,
         blocks.Turner,
-        blocks.Piston,
         blocks.HardTurner,
+        blocks.Mover,
     ]
 
 

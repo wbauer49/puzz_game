@@ -22,8 +22,8 @@ try:
             if event.type == pygame.QUIT:
                 running = False
                 continue
-
             env.controller.check_event(event)
+        env.controller.check_pressed_keys()
 
         env.renderer.render()
 

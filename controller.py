@@ -1,7 +1,9 @@
 
 import pygame
+import time
 
 import blocks
+import constants
 from constants import *
 import env
 
@@ -11,12 +13,16 @@ class Controller:
     drag_obj = None
     drag_pos = None
     start_coords = None
+    last_step_time = 0
+    space_pressed_time = 0
 
     def check_event(self, event):
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 env.grid.step_forward()
+                self.space_pressed_time = time.time()
+                self.last_step_time = time.time()
             elif event.key == pygame.K_r:
                 env.grid.reset_level()
 
@@ -53,3 +59,11 @@ class Controller:
                                 env.grid.set_grid_block(self.start_coords, None)
 
                     self.drag_obj = None
+
+    def check_pressed_keys(self):
+        pressed_keys = pygame.key.get_pressed()
+        if pressed_keys[pygame.K_SPACE]:
+            if time.time() - self.space_pressed_time >= constants.SPACE_PRESSED_TIME:
+                if time.time() - self.last_step_time >= constants.STEP_TIME:
+                    env.grid.step_forward()
+                    self.last_step_time = time.time()
