@@ -1,36 +1,41 @@
 
 import blocks
-import env
 
 
 class LevelGrid:
 
-    current_step = 0
+    curr_level = None
+    curr_step = 0
+    grid = []
 
     def __init__(self, level):
-        self.item_order = level.item_order
-        self.workspace_rect = level.workspace_rect
-        self.end_coords = level.end_coords
+        self.curr_level = level
+        self.reset_level()
 
+    def reset_level(self):
         self.grid = []
-        for row, row_list in enumerate(level.layout):
+        items = list(self.curr_level.items)
+
+        for row, row_list in enumerate(self.curr_level.layout):
             self.grid.append([])
             for col, block_type in enumerate(row_list):
                 self.grid[row].append(None)
                 if block_type == 1:
                     self.grid[row][col] = blocks.Wall()
-                elif self.coords_in_workspace((col, row)) and level.items:
-                    self.grid[row][col] = (level.items.pop())()  # level.items is a list of types
+                elif self.coords_in_workspace((col, row)) and items:
+                    self.grid[row][col] = (items.pop())()  # level.items is a list of types
+
+        self.curr_step = 0
 
     def coords_in_range(self, coords):
         return 0 <= coords[0] < len(self.grid[0]) and 0 <= coords[1] < len(self.grid)
 
     def coords_in_workspace(self, coords):
-        return self.workspace_rect[0] <= coords[0] < self.workspace_rect[0] + self.workspace_rect[2] and \
-            self.workspace_rect[1] <= coords[1] < self.workspace_rect[1] + self.workspace_rect[3]
+        rect = self.curr_level.workspace_rect
+        return rect[0] <= coords[0] < rect[0] + rect[2] and rect[1] <= coords[1] < rect[1] + rect[3]
 
     def step_forward(self):
-        item_type = self.item_order[self.current_step % len(self.item_order)]
+        item_type = self.curr_level.item_order[self.curr_step % len(self.curr_level.item_order)]
 
         actioned_items = []
         for row, row_list in enumerate(self.grid):
@@ -39,10 +44,10 @@ class LevelGrid:
                     block.perform_action((col, row))
                     actioned_items.append(block)
 
-        self.current_step += 1
-        print(f"step: {self.current_step}")
+        self.curr_step += 1
+        print(f"step: {self.curr_step}")
 
-        if self.get_grid_block(self.end_coords) is not None:
+        if self.get_grid_block(self.curr_level.end_coords) is not None:
             print(f"WIN!")
 
     def get_grid_block(self, coords):

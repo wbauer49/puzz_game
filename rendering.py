@@ -33,7 +33,7 @@ class Renderer:
         if env.controller.drag_obj is not None:
             self.screen.blit(env.controller.drag_obj.sprite, (env.controller.drag_pos[0], env.controller.drag_pos[1]))
 
-        i = env.grid.current_step % len(env.grid.item_order)
+        i = env.grid.curr_step % len(env.grid.curr_level.item_order)
         self.screen.blit(self.step_sprite, (i * BLOCK_SIZE * 2, HEIGHT - BLOCK_SIZE * 2))
 
         pygame.display.flip()
