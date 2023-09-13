@@ -1,4 +1,4 @@
-from constants import BLOCK_SIZE
+from constants import PIX
 
 import os.path
 import pygame
@@ -18,7 +18,7 @@ class Block(pygame.sprite.Sprite):
 
         sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"{self.sprite_name}.png")
         unscaled_sprite = pygame.image.load(sprite_path)
-        self.sprite = pygame.transform.scale(unscaled_sprite, (BLOCK_SIZE, BLOCK_SIZE))
+        self.sprite = pygame.transform.scale(unscaled_sprite, (PIX, PIX))
 
     def rotate(self):
         if self.is_directional:
@@ -103,6 +103,8 @@ class Turner(Item):
             coords_list = [(x, y + 1), (x + 1, y), (x, y - 1), (x - 1, y)]
 
         for coords in coords_list:
+            if not env.grid.coords_in_range(coords):
+                return
             block = env.grid.get_grid_block(coords)
             if block is not None and block.is_wall:
                 return
@@ -112,10 +114,12 @@ class Turner(Item):
             move_block = env.grid.get_grid_block(coords_list[i])
             env.grid.set_grid_block(coords_list[i + 1], move_block)
             if self.rotate_others:
-                move_block.rotate()
+                if move_block is not None:
+                    move_block.rotate()
         env.grid.set_grid_block(coords_list[0], temp_block)
         if self.rotate_others:
-            temp_block.rotate()
+            if temp_block is not None:
+                temp_block.rotate()
 
         self.rotate()
 
