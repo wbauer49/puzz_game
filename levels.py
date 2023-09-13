@@ -18,7 +18,7 @@ class Level1:
         "00000000000000100000",
     ]
     workspace_rect = (1, 1, 7, 3)
-    end_coords = (17, 8)
+    end_coords = (17, 7)
     items = [
         blocks.Mover,
         blocks.Turner,

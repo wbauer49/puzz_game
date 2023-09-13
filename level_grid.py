@@ -20,7 +20,7 @@ class LevelGrid:
             self.grid.append([])
             for col, block_type in enumerate(row_list):
                 self.grid[row].append(None)
-                if block_type == 1:
+                if block_type == "1":
                     self.grid[row][col] = blocks.Wall()
                 elif self.coords_in_workspace((col, row)) and items:
                     self.grid[row][col] = (items.pop())()  # level.items is a list of types

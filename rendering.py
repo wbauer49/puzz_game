@@ -29,7 +29,7 @@ class Renderer:
                 self.screen.blit(block.sprite, (col * PIX, row * PIX))
 
         if env.controller.drag_obj is not None:
-            self.screen.blit(env.controller.drag_obj.sprite, (env.controller.drag_pos[0], env.controller.drag_pos[1]))
+            self.screen.blit(env.controller.drag_obj.sprite, env.controller.drag_pos)
 
         i = env.grid.curr_step % len(env.grid.curr_level.item_order)
         self.screen.blit(self.step_sprite, (i * PIX * 2, HEIGHT - PIX * 2))
