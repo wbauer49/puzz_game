@@ -127,3 +127,27 @@ class Turner(Item):
 class HardTurner(Turner):
     sprite_name = "hard_turner"
     rotate_others = True
+
+
+class Swapper(Item):
+    sprite_name = "swapper"
+
+    def perform_action(self, self_coords):
+        x, y = self_coords
+
+        if self.direction % 2 == 0:  # horizontal swap
+            coords_list = [(x - 1, y), (x + 1, y)]
+        else:
+            coords_list = [(x, y - 1), (x, y + 1)]
+
+        for coords in coords_list:
+            if not env.grid.coords_in_range(coords):
+                return
+            block = env.grid.get_grid_block(coords)
+            if block is not None and block.is_wall:
+                return
+
+        block1 = env.grid.get_grid_block(coords_list[0])
+        block2 = env.grid.get_grid_block(coords_list[1])
+        env.grid.set_grid_block(coords_list[1], block1)
+        env.grid.set_grid_block(coords_list[0], block2)

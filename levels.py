@@ -1,10 +1,110 @@
 
-import blocks
+from blocks import *
 import env
 import level_grid
 
 
 class Level1:
+    layout = [
+        "00000000011111111111",
+        "00000000000011111111",
+        "00000000000000001111",
+        "00000000000000000001",
+        "00000000000000000001",
+        "00000000000000000001",
+    ]
+    workspace_rect = (0, 0, 2, 6)
+    end_coords = (17, 4)
+    items = [Mover]
+    item_order = [Mover]
+
+
+class Level2:
+    layout = [
+        "0000000000111111",
+        "0000000000111111",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+    ]
+    workspace_rect = (1, 1, 3, 4)
+    end_coords = (12, 5)
+    items = [Mover, Piston]
+    item_order = [Piston, Mover]
+
+
+class Level3:
+    layout = [
+        "0000000111111111",
+        "0000000111111111",
+        "0000000111111111",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+    ]
+    workspace_rect = (1, 1, 3, 4)
+    end_coords = (12, 5)
+    items = [Mover, Piston]
+    item_order = [Mover, Piston]
+
+
+class Level4:
+    layout = [
+        "111111000000",
+        "111111000000",
+        "111111000000",
+        "111111000000",
+        "000000000000",
+        "000000000000",
+        "000000000000",
+        "000000000000",
+        "000000000000",
+        "000000000000",
+    ]
+    workspace_rect = (6, 0, 6, 4)
+    end_coords = (5, 9)
+    items = [Mover, Piston, Swapper]
+    item_order = [Piston, Mover, Swapper]
+
+
+class Level5:
+    layout = [
+        "111111111111111111",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "111111111111111111",
+    ]
+    workspace_rect = (2, 2, 2, 2)
+    end_coords = (12, 4)
+    items = [Swapper, Turner]
+    item_order = [Swapper, Turner]
+
+
+class Level6:
+    layout = [
+        "111111111111111111",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "100000000000000001",
+        "111111111111111111",
+    ]
+    workspace_rect = (2, 2, 2, 2)
+    end_coords = (5, 4)
+    items = [Swapper, HardTurner]
+    item_order = [Swapper, HardTurner]
+
+
+class Level7:
     layout = [
         "00000000000000000000",
         "00000000000000000000",
@@ -19,19 +119,11 @@ class Level1:
     ]
     workspace_rect = (1, 1, 7, 3)
     end_coords = (17, 7)
-    items = [
-        blocks.Mover,
-        blocks.Turner,
-        blocks.HardTurner,
-    ]
-    item_order = [
-        blocks.Turner,
-        blocks.HardTurner,
-        blocks.Mover,
-    ]
+    items = [Mover, Turner, HardTurner]
+    item_order = [Turner, HardTurner, Mover]
 
 
-class Level2:
+class Level8:
     layout = [
         "11111111110000000000",
         "00000000000000000000",
@@ -46,22 +138,19 @@ class Level2:
     ]
     workspace_rect = (10, 1, 5, 5)
     end_coords = (2, 8)
-    items = [
-        blocks.Mover,
-        blocks.Piston,
-        blocks.Turner,
-    ]
-    item_order = [
-        blocks.Mover,
-        blocks.Piston,
-        blocks.Turner,
-    ]
+    items = [Mover, Piston, Turner]
+    item_order = [Mover, Piston, Turner]
 
 
 all_levels = [
-
     Level1(),
     Level2(),
+    Level3(),
+    Level4(),
+    Level5(),
+    Level6(),
+    Level7(),
+    Level8(),
 ]
 
 

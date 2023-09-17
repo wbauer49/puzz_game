@@ -28,8 +28,8 @@ class Renderer:
                     continue
                 self.screen.blit(block.sprite, (col * PIX, row * PIX))
 
-        if env.controller.drag_obj is not None:
-            self.screen.blit(env.controller.drag_obj.sprite, env.controller.drag_pos)
+        if env.controller.drag_block is not None:
+            self.screen.blit(env.controller.drag_block.sprite, env.controller.drag_pos)
 
         i = env.grid.curr_step % len(env.grid.curr_level.item_order)
         self.screen.blit(self.step_sprite, (i * PIX * 2, HEIGHT - PIX * 2))
@@ -44,6 +44,10 @@ class Renderer:
         grid_surface.fill(COLORS.BACKGROUND)
         self.layout_render.blit(grid_surface, (0, 0))
 
+        work_surface = pygame.Surface((PIX * level.workspace_rect[2], PIX * level.workspace_rect[3]))
+        work_surface.fill(COLORS.WORKSPACE)
+        self.layout_render.blit(work_surface, (level.workspace_rect[0] * PIX, level.workspace_rect[1] * PIX))
+
         for row, row_list in enumerate(level.layout):
             for col, block_type in enumerate(row_list):
                 if block_type == "1":
@@ -54,10 +58,6 @@ class Renderer:
                     goal_surface = pygame.Surface((PIX, PIX))
                     goal_surface.fill(COLORS.GOAL)
                     self.layout_render.blit(goal_surface, (col * PIX, row * PIX))
-
-        work_surface = pygame.Surface((PIX * level.workspace_rect[2], PIX * level.workspace_rect[3]))
-        work_surface.fill(COLORS.WORKSPACE)
-        self.layout_render.blit(work_surface, (level.workspace_rect[0] * PIX, level.workspace_rect[1] * PIX))
 
         for i, item_type in enumerate(level.item_order):
             sprite = pygame.transform.scale2x(item_type().sprite)

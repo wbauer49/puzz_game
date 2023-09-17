@@ -2,6 +2,7 @@
 import pygame
 import time
 
+import constants
 import controller
 import levels
 import rendering
@@ -27,7 +28,7 @@ try:
 
         env.renderer.render()
 
-        sleep_time = (1 / 60) - (time.time() - start_time)
+        sleep_time = (time.time() - start_time) / constants.FRAME_RATE
         if sleep_time > 0:
             time.sleep(sleep_time)
         else:
