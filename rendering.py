@@ -9,15 +9,20 @@ import env
 class Renderer:
 
     layout_render = None
+    text = None
 
     def __init__(self):
         pygame.init()
+        pygame.font.init()
+
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.flip()
 
         sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"step_indicator.png")
         unscaled_sprite = pygame.image.load(sprite_path)
         self.step_sprite = pygame.transform.scale(unscaled_sprite, (PIX * 2, PIX * 2))
+
+        self.font = pygame.font.Font("freesansbold.ttf", 13)
 
     def render(self):
         self.screen.blit(self.layout_render, (0, 0))
@@ -34,7 +39,15 @@ class Renderer:
         i = env.grid.curr_step % len(env.grid.curr_level.item_order)
         self.screen.blit(self.step_sprite, (i * PIX * 2, HEIGHT - PIX * 2))
 
+        if self.text is not None:
+            text_render = self.font.render(self.text, True, (0, 0, 0))
+            scaled_text = pygame.transform.scale_by(text_render, 5)
+            self.screen.blit(scaled_text, (0, HEIGHT - PIX * 3))
+
         pygame.display.flip()
+
+    def set_text(self, text):
+        self.text = text
 
     def render_layout(self, level):
         self.layout_render = pygame.Surface((WIDTH, HEIGHT))

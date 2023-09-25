@@ -81,7 +81,7 @@ class Level5:
         "111111111111111111",
     ]
     workspace_rect = (2, 2, 2, 2)
-    end_coords = (12, 4)
+    end_coords = (11, 4)
     items = [Swapper, Turner]
     item_order = [Swapper, Turner]
 
@@ -142,7 +142,7 @@ class Level8:
     item_order = [Mover, Piston, Turner]
 
 
-all_levels = [
+level_list = [
     Level1(),
     Level2(),
     Level3(),
@@ -152,13 +152,3 @@ all_levels = [
     Level7(),
     Level8(),
 ]
-
-
-def get_level(level_num):
-    return all_levels[level_num - 1]
-
-
-def go_to_level(level_num):
-    level = get_level(level_num)
-    env.renderer.render_layout(level)
-    env.grid = level_grid.LevelGrid(level)

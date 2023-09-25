@@ -4,16 +4,17 @@ import time
 
 import constants
 import controller
-import levels
+import menu
 import rendering
 import env
 
 
 try:
     env.controller = controller.Controller()
+    env.menu = menu.Menu()
     env.renderer = rendering.Renderer()
 
-    levels.go_to_level(1)
+    env.menu.go_to_world(1)
 
     running = True
     while running:

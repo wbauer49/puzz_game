@@ -1,5 +1,6 @@
 
 import blocks
+import env
 
 
 class LevelGrid:
@@ -48,7 +49,8 @@ class LevelGrid:
         print(f"step: {self.curr_step}")
 
         if self.get_grid_block(self.curr_level.end_coords) is not None:
-            print(f"WIN!")
+            env.renderer.set_text("Success! Press C to continue.")
+            env.controller.in_win_screen = True
 
     def get_grid_block(self, coords):
         return self.grid[coords[1]][coords[0]]
