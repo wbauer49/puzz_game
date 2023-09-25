@@ -1,4 +1,5 @@
 
+import asyncio
 import pygame
 import time
 
@@ -9,7 +10,8 @@ import rendering
 import env
 
 
-try:
+async def main_loop():
+
     env.controller = controller.Controller()
     env.menu = menu.Menu()
     env.renderer = rendering.Renderer()
@@ -29,13 +31,16 @@ try:
 
         env.renderer.render()
 
+        await asyncio.sleep(0)
+
         sleep_time = (time.time() - start_time) / constants.FRAME_RATE
         if sleep_time > 0:
             time.sleep(sleep_time)
         else:
             print("frame lag")
 
-
+try:
+    asyncio.run(main_loop())
 except KeyboardInterrupt:
     print("exited")
 finally:
