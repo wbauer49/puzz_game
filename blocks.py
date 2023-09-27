@@ -1,3 +1,4 @@
+import constants
 from constants import PIX
 
 import os.path
@@ -7,23 +8,20 @@ import env
 
 
 class Block(pygame.sprite.Sprite):
-    is_directional = False
+    sprite_name = "unassigned"
     is_wall = False
 
     direction = 0
-    sprite_name = "unassigned"
 
     def __init__(self):
         super().__init__()
 
         sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"{self.sprite_name}.png")
-        unscaled_sprite = pygame.image.load(sprite_path)
-        self.sprite = pygame.transform.scale(unscaled_sprite, (PIX, PIX))
+        self.sprite = pygame.transform.scale(pygame.image.load(sprite_path), (PIX, PIX))
 
     def rotate(self):
-        if self.is_directional:
-            self.direction = (self.direction + 1) % 4
-            self.sprite = pygame.transform.rotate(self.sprite, -90)
+        self.direction = (self.direction + 1) % 4
+        self.sprite = pygame.transform.rotate(self.sprite, -90)
 
 
 class Wall(Block):
@@ -31,7 +29,21 @@ class Wall(Block):
 
 
 class Item(Block):
-    is_directional = True
+
+    def __init__(self, direction=0, index=0):
+        super().__init__()
+        self.direction = direction
+        self.index = index
+
+        if index > 0:
+            color_rect = pygame.Surface((PIX, PIX))
+            color_rect.fill(constants.COLORS.INDEX_COLORS[index - 1])
+
+            sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"index_mask.png")
+            index_mask = pygame.transform.scale(pygame.image.load(sprite_path), (PIX, PIX))
+            index_mask.blit(color_rect, (0, 0), special_flags=pygame.BLEND_ADD)
+
+            self.sprite.blit(index_mask, (0, 0))
 
     def perform_action(self, self_coords):
         pass
@@ -39,32 +51,31 @@ class Item(Block):
 
 class Box(Item):
     sprite_name = "box"
-    is_directional = False
-
-
-def get_all_coords_in_direction(start_coords, direction):
-    x, y = start_coords
-
-    if direction == 0:
-        ret_coords = [(x, i) for i in range(y - 1, -1, -1)]
-    elif direction == 1:
-        ret_coords = [(i, y) for i in range(x + 1, env.grid.get_width())]
-    elif direction == 2:
-        ret_coords = [(x, i) for i in range(y + 1, env.grid.get_height())]
-    elif direction == 3:
-        ret_coords = [(i, y) for i in range(x - 1, -1, -1)]
-    else:
-        raise ValueError
-
-    return ret_coords
 
 
 class Piston(Item):
     sprite_name = "piston"
     move_self = False
 
+    @staticmethod
+    def get_all_coords_in_direction(start_coords, direction):
+        x, y = start_coords
+
+        if direction == 0:
+            ret_coords = [(x, i) for i in range(y - 1, -1, -1)]
+        elif direction == 1:
+            ret_coords = [(i, y) for i in range(x + 1, env.grid.get_width())]
+        elif direction == 2:
+            ret_coords = [(x, i) for i in range(y + 1, env.grid.get_height())]
+        elif direction == 3:
+            ret_coords = [(i, y) for i in range(x - 1, -1, -1)]
+        else:
+            raise ValueError
+
+        return ret_coords
+
     def perform_action(self, self_coords):
-        coords_list = get_all_coords_in_direction(self_coords, self.direction)
+        coords_list = self.get_all_coords_in_direction(self_coords, self.direction)
         for i, coords in enumerate(coords_list):
             block = env.grid.get_grid_block(coords)
             if block is None:

@@ -14,17 +14,24 @@ class LevelGrid:
         self.reset_level()
 
     def reset_level(self):
-        self.grid = []
-        items = list(self.curr_level.items)
+        item_order = list(self.curr_level.item_order)
+        item_counts = {}
 
+        self.grid = []
         for row, row_list in enumerate(self.curr_level.layout):
             self.grid.append([])
             for col, block_type in enumerate(row_list):
                 self.grid[row].append(None)
                 if block_type == "1":
                     self.grid[row][col] = blocks.Wall()
-                elif self.coords_in_workspace((col, row)) and items:
-                    self.grid[row][col] = (items.pop())()  # level.items is a list of types
+                elif self.coords_in_workspace((col, row)) and item_order:
+                    item_type = item_order.pop()
+
+                    if item_type not in item_counts:
+                        item_counts[item_type] = 0
+                    item_counts[item_type] += 1
+
+                    self.grid[row][col] = item_type(index=item_counts[item_type] - 1)
 
         self.curr_step = 0
 

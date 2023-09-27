@@ -1,7 +1,5 @@
 
 from blocks import *
-import env
-import level_grid
 
 
 class Level1:
@@ -15,8 +13,7 @@ class Level1:
     ]
     workspace_rect = (0, 0, 2, 6)
     end_coords = (17, 4)
-    items = [Mover]
-    item_order = [Mover]
+    item_order = [Mover, Mover]
 
 
 class Level2:
@@ -31,7 +28,6 @@ class Level2:
     ]
     workspace_rect = (1, 1, 3, 4)
     end_coords = (12, 5)
-    items = [Mover, Piston]
     item_order = [Piston, Mover]
 
 
@@ -47,7 +43,6 @@ class Level3:
     ]
     workspace_rect = (1, 1, 3, 4)
     end_coords = (12, 5)
-    items = [Mover, Piston]
     item_order = [Mover, Piston]
 
 
@@ -66,7 +61,6 @@ class Level4:
     ]
     workspace_rect = (6, 0, 6, 4)
     end_coords = (5, 9)
-    items = [Mover, Piston, Swapper]
     item_order = [Piston, Mover, Swapper]
 
 
@@ -82,7 +76,6 @@ class Level5:
     ]
     workspace_rect = (2, 2, 2, 2)
     end_coords = (11, 4)
-    items = [Swapper, Turner]
     item_order = [Swapper, Turner]
 
 
@@ -100,7 +93,6 @@ class Level6:
     ]
     workspace_rect = (2, 2, 2, 2)
     end_coords = (5, 4)
-    items = [Swapper, HardTurner]
     item_order = [Swapper, HardTurner]
 
 
@@ -119,7 +111,6 @@ class Level7:
     ]
     workspace_rect = (1, 1, 7, 3)
     end_coords = (17, 7)
-    items = [Mover, Turner, HardTurner]
     item_order = [Turner, HardTurner, Mover]
 
 
@@ -138,17 +129,16 @@ class Level8:
     ]
     workspace_rect = (10, 1, 5, 5)
     end_coords = (2, 8)
-    items = [Mover, Piston, Turner]
     item_order = [Mover, Piston, Turner]
 
 
 level_list = [
-    Level1(),
-    Level2(),
-    Level3(),
-    Level4(),
-    Level5(),
-    Level6(),
-    Level7(),
-    Level8(),
+    Level1,
+    Level2,
+    Level3,
+    Level4,
+    Level5,
+    Level6,
+    Level7,
+    Level8,
 ]

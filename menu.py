@@ -1,6 +1,6 @@
 
 import env
-import level_grid
+import grids
 from levels import world1
 
 
@@ -28,7 +28,7 @@ class Menu:
 
     def go_to_level(self, level_num):
         self.level_num = level_num
-        level = ALL_LEVELS[self.world_num - 1][level_num - 1]
+        level = ALL_LEVELS[self.world_num - 1][level_num - 1]()
         env.renderer.set_text(None)
         env.renderer.render_layout(level)
-        env.grid = level_grid.LevelGrid(level)
+        env.grid = grids.LevelGrid(level)
