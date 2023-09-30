@@ -10,6 +10,7 @@ import env
 class Block(pygame.sprite.Sprite):
     sprite_name = "unassigned"
     is_wall = False
+    is_item = False
 
     direction = 0
 
@@ -17,7 +18,7 @@ class Block(pygame.sprite.Sprite):
         super().__init__()
 
         sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"{self.sprite_name}.png")
-        self.sprite = pygame.transform.scale(pygame.image.load(sprite_path), (PIX, PIX))
+        self.sprite = pygame.transform.scale(pygame.image.load(sprite_path).convert_alpha(), (PIX, PIX))
 
     def rotate(self):
         self.direction = (self.direction + 1) % 4
@@ -29,6 +30,7 @@ class Wall(Block):
 
 
 class Item(Block):
+    is_item = True
 
     def __init__(self, direction=0, index=0):
         super().__init__()
@@ -40,8 +42,8 @@ class Item(Block):
             color_rect.fill(constants.COLORS.INDEX_COLORS[index - 1])
 
             sprite_path = os.path.join(os.path.dirname(__file__), "sprites", f"index_mask.png")
-            index_mask = pygame.transform.scale(pygame.image.load(sprite_path), (PIX, PIX))
-            index_mask.blit(color_rect, (0, 0), special_flags=pygame.BLEND_ADD)
+            index_mask = pygame.transform.scale(pygame.image.load(sprite_path).convert_alpha(), (PIX, PIX))
+            index_mask.blit(color_rect, (0, 0), special_flags=pygame.BLEND_MULT)
 
             self.sprite.blit(index_mask, (0, 0))
 

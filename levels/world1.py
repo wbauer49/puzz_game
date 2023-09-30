@@ -2,7 +2,22 @@
 from blocks import *
 
 
-class Level1:
+class Level:
+    item_order = None
+
+    def create_items(self):
+        item_list = []
+        item_counts = {}
+        for item_type in self.item_order:
+            if item_type not in item_counts:
+                item_counts[item_type] = 0
+            item_counts[item_type] += 1
+            item_list.append(item_type(index=item_counts[item_type] - 1))
+
+        return item_list
+
+
+class Level1(Level):
     layout = [
         "00000000011111111111",
         "00000000000011111111",
@@ -13,10 +28,10 @@ class Level1:
     ]
     workspace_rect = (0, 0, 2, 6)
     end_coords = (17, 4)
-    item_order = [Mover, Mover]
+    item_order = [Mover]
 
 
-class Level2:
+class Level2(Level):
     layout = [
         "0000000000111111",
         "0000000000111111",
@@ -31,7 +46,7 @@ class Level2:
     item_order = [Piston, Mover]
 
 
-class Level3:
+class Level3(Level):
     layout = [
         "0000000111111111",
         "0000000111111111",
@@ -46,7 +61,7 @@ class Level3:
     item_order = [Mover, Piston]
 
 
-class Level4:
+class Level4(Level):
     layout = [
         "111111000000",
         "111111000000",
@@ -64,7 +79,7 @@ class Level4:
     item_order = [Piston, Mover, Swapper]
 
 
-class Level5:
+class Level5(Level):
     layout = [
         "111111111111111111",
         "100000000000000001",
@@ -79,7 +94,7 @@ class Level5:
     item_order = [Swapper, Turner]
 
 
-class Level6:
+class Level6(Level):
     layout = [
         "111111111111111111",
         "100000000000000001",
@@ -96,7 +111,7 @@ class Level6:
     item_order = [Swapper, HardTurner]
 
 
-class Level7:
+class Level7(Level):
     layout = [
         "00000000000000000000",
         "00000000000000000000",
@@ -114,7 +129,7 @@ class Level7:
     item_order = [Turner, HardTurner, Mover]
 
 
-class Level8:
+class Level8(Level):
     layout = [
         "11111111110000000000",
         "00000000000000000000",
@@ -132,7 +147,28 @@ class Level8:
     item_order = [Mover, Piston, Turner]
 
 
+class Level9(Level):
+    layout = [
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+        "0000000000000000",
+    ]
+    workspace_rect = (1, 1, 5, 5)
+    end_coords = (11, 8)
+    item_order = [Mover, Piston, Turner, HardTurner, Swapper, Piston, Turner, HardTurner, Swapper, Mover, Mover]
+
+
 level_list = [
+    Level9,
     Level1,
     Level2,
     Level3,

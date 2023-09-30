@@ -72,7 +72,6 @@ class Renderer:
                     goal_surface.fill(COLORS.GOAL)
                     self.layout_render.blit(goal_surface, (col * PIX, row * PIX))
 
-        for i, item_type in enumerate(level.item_order):
-            index = level.item_order[:i].count(item_type)
-            sprite = pygame.transform.scale2x(item_type(index=index).sprite)
+        for i, item, in enumerate(level.create_items()):
+            sprite = pygame.transform.scale2x(item.sprite)
             self.layout_render.blit(sprite, (i * PIX * 2, HEIGHT - PIX * 2))
