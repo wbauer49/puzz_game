@@ -1,10 +1,8 @@
-import sys
 import pathlib
 import pygbag.app
 
 
-def app(environ, start_response):
-    start_response('200 OK', [('Content-Type', 'application/octet-stream')])
-    sys.argv = [pathlib.Path(__file__).parent, "main.py"]
-    pygbag.app.main()
+async def app(environ, start_response=None, a=None):
+    #start_response('200 OK', [('Content-Type', 'application/octet-stream')])
+    await(pygbag.app.main_run(pathlib.Path(__file__).parent, "main.py"))
     return []
