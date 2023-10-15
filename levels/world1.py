@@ -168,7 +168,6 @@ class Level9(Level):
 
 
 level_list = [
-    Level9,
     Level1,
     Level2,
     Level3,
@@ -177,4 +176,5 @@ level_list = [
     Level6,
     Level7,
     Level8,
+    Level9,
 ]
