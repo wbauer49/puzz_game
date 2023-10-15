@@ -24,6 +24,8 @@ class Renderer:
 
         self.font = pygame.font.Font("freesansbold.ttf", 13)
 
+        pygame.display.set_icon(unscaled_sprite)
+
     def render(self):
         self.screen.blit(self.layout_render, (0, 0))
 

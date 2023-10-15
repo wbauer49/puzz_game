@@ -1,11 +1,7 @@
+import sys
 import pathlib
-from pygbag.app import main_run
+import pygbag.app
 
 
-class App:
-
-    def __call__(self, *args, **kwargs):
-        main_run(pathlib.Path(__file__).parent, "main.py")
-
-
-app = App()
+sys.argv = [pathlib.Path(__file__).parent, "main.py"]
+pygbag.app.main()
